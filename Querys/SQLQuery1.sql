@@ -52,6 +52,14 @@ CREATE TABLE urgencia(
 	CONSTRAINT FK_pacienteU FOREIGN KEY (id_paciente) REFERENCES dbo.paciente(id_paciente),
 	CONSTRAINT FK_facturaU FOREIGN KEY (id_factura) REFERENCES dbo.factura(id_factura)
 );
+/*Medicamento*/
+CREATE TABLE medicamento (
+	id_medicamento int IDENTITY(1,1),
+	denominacion varchar (45),
+	principio_activo varchar(45),
+	CONSTRAINT PK_medicamento PRIMARY KEY(id_medicamento)
+);
+/*Consulta*/
 CREATE TABLE consulta(
 	id_consulta int IDENTITY (1,1),
 	justificante varchar(100),
