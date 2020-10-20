@@ -59,6 +59,33 @@ CREATE TABLE medicamento (
 	principio_activo varchar(45),
 	CONSTRAINT PK_medicamento PRIMARY KEY(id_medicamento)
 );
+/*Diagnostico*/
+CREATE TABLE diagnostico(
+	id_diagnostico int IDENTITY (1,1),
+	duracion_diagnostico varchar(45),
+	dosis_diagnostico varchar(45),
+	descripcion_diagnostico varchar (100),
+	id_medicamento int NOT NULL,
+	CONSTRAINT PK_diagnostico PRIMARY KEY(id_diagnostico),
+	CONSTRAINT FK_medicamento FOREIGN KEY (id_medicamento) REFERENCES dbo.medicamento(id_medicamento)
+);
+/*Tipo Consulta*/
+CREATE TABLE tipo_consulta(
+	id_tipo_consulta int IDENTITY (1,1),
+	tipo_consulta varchar(15),
+	CONSTRAINT PK_tipo_consulta PRIMARY KEY (id_tipo_consulta)
+);
+/*Nueva Cita*/
+CREATE TABLE nueva_cita(
+	id_nueva_cita int IDENTITY (1,1),
+	fecha_nueva_cita varchar(20),
+	descripcion_nueva_cita varchar(100),
+	id_paciente int NOT NULL,
+	id_tipo_consulta int NOT NULL,
+	CONSTRAINT PK_nueva_cita PRIMARY KEY (id_nueva_cita),
+	CONSTRAINT FK_pacienteN FOREIGN KEY (id_paciente) REFERENCES dbo.paciente(id_paciente),
+	CONSTRAINT FK_tipo_consultaN FOREIGN KEY (id_tipo_consulta) REFERENCES dbo.tipo_consulta (id_tipo_consulta)
+);
 /*Consulta*/
 CREATE TABLE consulta(
 	id_consulta int IDENTITY (1,1),
@@ -66,14 +93,14 @@ CREATE TABLE consulta(
 	id_aseguradora int NOT NULL,
 	id_paciente int NOT NULL,
 	id_tipo_consulta int NOT NULL,
-	id_medicina int NOT NULL,
 	id_diagnostico int NOT NULL,
-	id_nueva_consulta int NOT NUll,
+	id_nueva_cita int,
+	id_factura varchar NOT NULL,
 	CONSTRAINT PK_consulta PRIMARY KEY(id_consulta),
-	CONSTRAINT FK_aseguradoraC FOREIGN KEY (id_aseguradora) REFERENCES dbo.aseguradora(id_aseguradora),
-	CONSTRAINT FK_pacienteC FOREIGN KEY (id_paciente) REFERENCES dbo.paciente(id_paciente),
-	CONSTRAINT FK_tipo_consultaC FOREIGN KEY (id_aseguradora) REFERENCES dbo.aseguradora(id_aseguradora),
-	CONSTRAINT FK_medicinaC FOREIGN KEY (id_aseguradora) REFERENCES dbo.aseguradora(id_aseguradora),
-	CONSTRAINT FK_diagnosticoC FOREIGN KEY (id_aseguradora) REFERENCES dbo.aseguradora(id_aseguradora),
-	CONSTRAINT FK_nueva_consultaC FOREIGN KEY (id_aseguradora) REFERENCES dbo.aseguradora(id_aseguradora),
+	CONSTRAINT FK_aseguradoraCO FOREIGN KEY (id_aseguradora) REFERENCES dbo.aseguradora(id_aseguradora),
+	CONSTRAINT FK_pacienteCO FOREIGN KEY (id_paciente) REFERENCES dbo.paciente(id_paciente),
+	CONSTRAINT FK_tipo_consultaCO FOREIGN KEY (id_tipo_consulta) REFERENCES dbo.tipo_consulta(id_tipo_consulta),
+	CONSTRAINT FK_diagnosticoCO FOREIGN KEY (id_diagnostico) REFERENCES dbo.diagnostico(id_diagnostico),
+	CONSTRAINT FK_nueva_citaCO FOREIGN KEY (id_nueva_cita) REFERENCES dbo.nueva_cita(id_nueva_cita),
+	CONSTRAINT FK_facturaCO FOREIGN KEY (id_factura) REFERENCES dbo.factura(id_factura),
 );
