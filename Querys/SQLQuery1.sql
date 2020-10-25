@@ -104,3 +104,14 @@ CREATE TABLE consulta(
 	CONSTRAINT FK_nueva_citaCO FOREIGN KEY (id_nueva_cita) REFERENCES dbo.nueva_cita(id_nueva_cita),
 	CONSTRAINT FK_facturaCO FOREIGN KEY (id_factura) REFERENCES dbo.factura(id_factura),
 );
+/*INSERT Paciente*/
+INSERT INTO dbo.paciente (nombre, apellido, domicilio, sexo, fecha_nacimiento)
+VALUES ('Jose Israel', 'Santizo Santos', 'Guatemala, Guatemala', 'Masculino', '01-12-1998'),
+('Ericka Luisa', 'Peralta Tapia', 'Guatemala, Guatemala', 'Femenino', '22-10-1996'); 
+SELECT * FROM dbo.paciente;
+/*INSERT Aseguradora*/
+INSERT INTO dbo.aseguradora(nombre, domicilio_social, CIF, id_paciente)
+VALUES ('El Roble', 'Guatemala, Guatemala', 'A37001369', '1'), 
+('Seguros G&T', 'Guatemala, Guatemala', 'A40222647', '2'); 
+SELECT * FROM dbo.aseguradora;
+/*PROCEDURE*/
