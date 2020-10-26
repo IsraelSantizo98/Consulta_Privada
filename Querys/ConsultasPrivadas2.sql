@@ -101,4 +101,8 @@ SELECT * FROM dbo.urgencia;
 INSERT INTO dbo.cita(fecha_hora_cita, id_paciente)
 VALUES ('26/10/2020 10am', '2');
 SELECT * FROM dbo.cita;
-/**/
+/*Insert medicamento*/
+INSERT INTO dbo.medicamento(principio_activo, denominacion)
+VALUES ('Vitamina C', 'Antigripal'),
+('Vitamina B', 'Analgesico');
+SELECT * FROM dbo.medicamento;
