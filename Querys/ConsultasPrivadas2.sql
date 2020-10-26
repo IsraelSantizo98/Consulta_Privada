@@ -49,6 +49,7 @@ CREATE TABLE consulta(
 	CONSTRAINT PK_consulta PRIMARY KEY(id_consulta),
 	CONSTRAINT FK_citaCO FOREIGN KEY (id_cita) REFERENCES dbo.cita(id_cita)
 );
+EXEC sp_RENAME 'dbo.consulta.tipo_hora_nueva_consulta', 'tipo_consulta', 'COLUMN';
 /*Creacion tabla medicamento*/
 CREATE TABLE medicamento(
 	id_medicamento int IDENTITY(1,1),
