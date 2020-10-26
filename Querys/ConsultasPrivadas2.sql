@@ -107,3 +107,7 @@ INSERT INTO dbo.medicamento(principio_activo, denominacion)
 VALUES ('Vitamina C', 'Antigripal'),
 ('Vitamina B', 'Analgesico');
 SELECT * FROM dbo.medicamento;
+/*Insert consulta*/
+INSERT INTO dbo.consulta(tipo_consulta, fecha_nueva_consulta, justificante_consulta, id_cita)
+VALUES('Revision', '15/11/2020', 'Aseguradora cubre el gasto', '1');
+SELECT * FROM dbo.consulta;
