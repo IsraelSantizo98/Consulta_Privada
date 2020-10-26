@@ -56,3 +56,16 @@ CREATE TABLE medicamento(
 	denominacion varchar(45),
 	CONSTRAINT PK_medicamento PRIMARY KEY (id_medicamento)
 );
+/*Creacion tabla diagnostico*/
+CREATE TABLE diagnostico(
+	id_diagnostico int IDENTITY (1,1),
+	dosis_diagnostico varchar(45),
+	descripcion_diagnostico varchar(100),
+	id_consulta int,
+	id_urgencia int,
+	id_medicamento int,
+	CONSTRAINT PK_diagnostico PRIMARY KEY(id_diagnostico),
+	CONSTRAINT FK_consultaD FOREIGN KEY (id_consulta) REFERENCES dbo.consulta (id_consulta),
+	CONSTRAINT FK_urgencia FOREIGN KEY (id_urgencia) REFERENCES dbo.urgencia (id_urgencia),
+	CONSTRAINT FK_medicamento FOREIGN KEY (id_medicamento) REFERENCES dbo.medicamento (id_medicamento)
+);
