@@ -69,3 +69,17 @@ CREATE TABLE diagnostico(
 	CONSTRAINT FK_urgencia FOREIGN KEY (id_urgencia) REFERENCES dbo.urgencia (id_urgencia),
 	CONSTRAINT FK_medicamento FOREIGN KEY (id_medicamento) REFERENCES dbo.medicamento (id_medicamento)
 );
+/*Creation tabla factura*/
+CREATE TABLE factura(
+	id_factura int IDENTITY (1,1),
+	nit_factura varchar(8),
+	descripcion_factura varchar(100),
+	total_factura decimal(18,2),
+	id_paciente int NOT NULL,
+	id_consulta int,
+	id_urgencia int,
+	CONSTRAINT PK_factura PRIMARY KEY (id_factura),
+	CONSTRAINT FK_pacienteF FOREIGN KEY (id_paciente) REFERENCES dbo.paciente (id_paciente),
+	CONSTRAINT FK_consultaF FOREIGN KEY (id_consulta) REFERENCES dbo.consulta (id_consulta),
+	CONSTRAINT FK_urgenciaF FOREIGN KEY (id_urgencia) REFERENCES dbo.urgencia (id_urgencia)
+);
