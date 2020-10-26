@@ -97,3 +97,8 @@ SELECT * FROM dbo.paciente;
 INSERT INTO dbo.urgencia(nombre_urgencia, apellido_urgencia, fecha_hora_urgencia, descripcion_urgencia, id_paciente)
 VALUES('Jose Israel', 'Santizo Santos', '25/10/2020 4pm', 'Ingreso de emergencia posible fractura de brazo', '1');
 SELECT * FROM dbo.urgencia;
+/*Insert Cita*/
+INSERT INTO dbo.cita(fecha_hora_cita, id_paciente)
+VALUES ('26/10/2020 10am', '2');
+SELECT * FROM dbo.cita;
+/**/
