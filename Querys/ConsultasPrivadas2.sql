@@ -117,3 +117,9 @@ VALUES ('1 vez cada 12hrs por 3 dias', 'Paciente con sintamos de gripe se receta
 INSERT INTO dbo.diagnostico(dosis_diagnostico, descripcion_diagnostico, id_urgencia, id_medicamento)
 VALUES ('2 vez cada 6hrs por 6 dias', 'Paciente fractura de brazo izquierdo se receta analgesico', '1', '2');
 SELECT * FROM dbo.diagnostico;
+/*Insert factura*/
+INSERT INTO dbo.factura(nit_factura, descripcion_factura, total_factura, id_paciente, id_consulta)
+VALUES('674598-5', 'Aseguradora cubre gastos', 125.00, '2', '1');
+INSERT INTO dbo.factura(nit_factura, descripcion_factura, total_factura, id_paciente, id_urgencia)
+VALUES('324587-1', 'Aseguradora cubre gastos', 125.00, '1', '1');
+SELECT * FROM dbo.factura;
