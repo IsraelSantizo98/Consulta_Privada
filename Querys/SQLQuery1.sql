@@ -69,9 +69,11 @@ CREATE TABLE diagnostico(
 	dosis_diagnostico varchar(45),
 	descripcion_diagnostico varchar (100),
 	id_medicamento int NOT NULL,
+	id_consulta int NOT NULL,
 	CONSTRAINT PK_diagnostico PRIMARY KEY(id_diagnostico),
 	CONSTRAINT FK_medicamento FOREIGN KEY (id_medicamento) REFERENCES dbo.medicamento(id_medicamento)
 );
+DROP TABLE diagnostico
 /*Consulta*/
 CREATE TABLE consulta(
 	id_consulta int IDENTITY (1,1),
@@ -80,11 +82,11 @@ CREATE TABLE consulta(
 	tipo_consulta varchar(45),
 	id_aseguradora int NOT NULL,
 	id_paciente int NOT NULL,
-	id_diagnostico int NOT NULL,
+	id_cita int NOT NULL,
 	CONSTRAINT PK_consulta PRIMARY KEY(id_consulta),
 	CONSTRAINT FK_aseguradoraCO FOREIGN KEY (id_aseguradora) REFERENCES dbo.aseguradora(id_aseguradora),
 	CONSTRAINT FK_pacienteCO FOREIGN KEY (id_paciente) REFERENCES dbo.paciente(id_paciente),
-	CONSTRAINT FK_diagnosticoCO FOREIGN KEY (id_diagnostico) REFERENCES dbo.diagnostico(id_diagnostico),
+	CONSTRAINT FK_citaCO FOREIGN KEY (id_cita) REFERENCES dbo.cita(id_cita),
 );
 drop table consulta;
 /*INSERT Paciente*/
@@ -113,5 +115,13 @@ VALUES('3-5 dias', '2 pastillas cada 6hrs', 'Analgesico para dolor muscular', '1
 ('1-2', '3 pastillas cada 12hrs', 'Analgesico para fiebre', '2');
 SELECT * FROM dbo.diagnostico;
 /*Insert Consulta*/
-INSERT INTO dbo.consulta (justificante, fecha_nueva_consulta, tipo_consulta, id_aseguradora, )
+INSERT INTO dbo.consulta (justificante, fecha_nueva_consulta, tipo_consulta, id_aseguradora, id_paciente, id_cita)
+VALUES('Enfermo de gripe', '16/10/2020 4pm', 'Revision', '1', '1', '2');
+SELECT * FROM dbo.consulta;
+/*INSERT urgencia*/
+INSERT INTO dbo.urgencia (fecha_urgencia, descripcion, id_paciente)
+VALUES('24/10/2020 4PM', 'Ingreso de urgencia fractura de brazo', '2');
+SELECT * FROM dbo.urgencia
+/*INSERT factura*/
+INSERT INTO dbo.factura(fecha_factura, nit_factura, nombre_factura, descripcion_factura, total_factura, id_consulta, id_urgencia)
 /*PROCEDURE*/
