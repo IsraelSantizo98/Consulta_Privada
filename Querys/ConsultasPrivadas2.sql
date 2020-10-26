@@ -83,3 +83,9 @@ CREATE TABLE factura(
 	CONSTRAINT FK_consultaF FOREIGN KEY (id_consulta) REFERENCES dbo.consulta (id_consulta),
 	CONSTRAINT FK_urgenciaF FOREIGN KEY (id_urgencia) REFERENCES dbo.urgencia (id_urgencia)
 );
+/*Inssert Aseguradora*/
+INSERT INTO dbo.aseguradora(nombre_aseguradora, domicilio_social_aseguradora, CIF_aseguradora)
+VALUES ('El Roble', 'Guatemala, Guatemala', 'A000001'),
+('G&T', 'Guatemala, Guatemala', 'A000002');
+SELECT * FROM dbo.aseguradora;
+/**/
