@@ -88,4 +88,8 @@ INSERT INTO dbo.aseguradora(nombre_aseguradora, domicilio_social_aseguradora, CI
 VALUES ('El Roble', 'Guatemala, Guatemala', 'A000001'),
 ('G&T', 'Guatemala, Guatemala', 'A000002');
 SELECT * FROM dbo.aseguradora;
-/**/
+/*Insert Paciente*/
+INSERT INTO dbo.paciente(nombre_paciente, apellido_paciente, domicilio_paciente, sexo_paciente, fecha_naciemiento_paciente, id_aseguradora)
+VALUES('Jose Israel', 'Santizo Santos', 'Colonia 2, Guatemala Ciudad', 'Masculino', '01/12/1998', '1'),
+('Dilia Isabel', 'Valle Caceres', 'Residencial 4, Guatemal Ciudad', 'Femenino', '22/02/1999', '2');
+SELECT * FROM dbo.paciente;
