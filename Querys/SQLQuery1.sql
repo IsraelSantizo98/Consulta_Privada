@@ -39,18 +39,21 @@ CREATE TABLE factura(
 	nombre_factura varchar(45),
 	descripcion_factura varchar(100),
 	total_factura decimal (18,2),
-	CONSTRAINT PK_factura PRIMARY KEY (id_factura)
+	id_consulta int,
+	id_urgencia int,
+	CONSTRAINT PK_factura PRIMARY KEY (id_factura),
+	CONSTRAINT FK_consultaF FOREIGN KEY (id_consulta) REFERENCES dbo.consulta (id_consulta),
+	CONSTRAINT FK_urgenciaF FOREIGN KEY (id_urgencia) REFERENCES dbo.urgencia (id_urgencia),
 );
+DROP TABLE factura
 /*Urgencia*/
 CREATE TABLE urgencia(
 	id_urgencia int IDENTITY(1,1),
 	fecha_urgencia varchar(20),
 	descripcion varchar(100),
 	id_paciente int NOT NULL,
-	id_factura varchar NOT NULL,
 	CONSTRAINT PK_urgencia PRIMARY KEY (id_urgencia),
-	CONSTRAINT FK_pacienteU FOREIGN KEY (id_paciente) REFERENCES dbo.paciente(id_paciente),
-	CONSTRAINT FK_facturaU FOREIGN KEY (id_factura) REFERENCES dbo.factura(id_factura)
+	CONSTRAINT FK_pacienteU FOREIGN KEY (id_paciente) REFERENCES dbo.paciente(id_paciente)
 );
 /*Medicamento*/
 CREATE TABLE medicamento (
@@ -69,41 +72,21 @@ CREATE TABLE diagnostico(
 	CONSTRAINT PK_diagnostico PRIMARY KEY(id_diagnostico),
 	CONSTRAINT FK_medicamento FOREIGN KEY (id_medicamento) REFERENCES dbo.medicamento(id_medicamento)
 );
-/*Tipo Consulta*/
-CREATE TABLE tipo_consulta(
-	id_tipo_consulta int IDENTITY (1,1),
-	tipo_consulta varchar(15),
-	CONSTRAINT PK_tipo_consulta PRIMARY KEY (id_tipo_consulta)
-);
-/*Nueva Cita*/
-CREATE TABLE nueva_cita(
-	id_nueva_cita int IDENTITY (1,1),
-	fecha_nueva_cita varchar(20),
-	descripcion_nueva_cita varchar(100),
-	id_paciente int NOT NULL,
-	id_tipo_consulta int NOT NULL,
-	CONSTRAINT PK_nueva_cita PRIMARY KEY (id_nueva_cita),
-	CONSTRAINT FK_pacienteN FOREIGN KEY (id_paciente) REFERENCES dbo.paciente(id_paciente),
-	CONSTRAINT FK_tipo_consultaN FOREIGN KEY (id_tipo_consulta) REFERENCES dbo.tipo_consulta (id_tipo_consulta)
-);
 /*Consulta*/
 CREATE TABLE consulta(
 	id_consulta int IDENTITY (1,1),
 	justificante varchar(100),
+	fecha_nueva_consulta varchar (100),
+	tipo_consulta varchar(45),
 	id_aseguradora int NOT NULL,
 	id_paciente int NOT NULL,
-	id_tipo_consulta int NOT NULL,
 	id_diagnostico int NOT NULL,
-	id_nueva_cita int,
-	id_factura varchar NOT NULL,
 	CONSTRAINT PK_consulta PRIMARY KEY(id_consulta),
 	CONSTRAINT FK_aseguradoraCO FOREIGN KEY (id_aseguradora) REFERENCES dbo.aseguradora(id_aseguradora),
 	CONSTRAINT FK_pacienteCO FOREIGN KEY (id_paciente) REFERENCES dbo.paciente(id_paciente),
-	CONSTRAINT FK_tipo_consultaCO FOREIGN KEY (id_tipo_consulta) REFERENCES dbo.tipo_consulta(id_tipo_consulta),
 	CONSTRAINT FK_diagnosticoCO FOREIGN KEY (id_diagnostico) REFERENCES dbo.diagnostico(id_diagnostico),
-	CONSTRAINT FK_nueva_citaCO FOREIGN KEY (id_nueva_cita) REFERENCES dbo.nueva_cita(id_nueva_cita),
-	CONSTRAINT FK_facturaCO FOREIGN KEY (id_factura) REFERENCES dbo.factura(id_factura),
 );
+drop table consulta;
 /*INSERT Paciente*/
 INSERT INTO dbo.paciente (nombre, apellido, domicilio, sexo, fecha_nacimiento)
 VALUES ('Jose Israel', 'Santizo Santos', 'Guatemala, Guatemala', 'Masculino', '01-12-1998'),
@@ -114,4 +97,21 @@ INSERT INTO dbo.aseguradora(nombre, domicilio_social, CIF, id_paciente)
 VALUES ('El Roble', 'Guatemala, Guatemala', 'A37001369', '1'), 
 ('Seguros G&T', 'Guatemala, Guatemala', 'A40222647', '2'); 
 SELECT * FROM dbo.aseguradora;
+/*Insert cita Paciente 1*/
+INSERT INTO dbo.cita (nombre, apellido, fecha_cita, id_paciente)
+VALUES ('Jose Israel', 'Santizo Santos', '25/10 4pm', '1'),
+('Ericka Luisa', 'Peralta Tapia', '24/10 5pm', '2');
+SELECT * FROM dbo.cita;
+/*INSERT MEDICAMENTO*/
+INSERT INTO dbo.medicamento(denominacion, principio_activo)
+VALUES ('Paracetamol', 'Paracetamol'),
+('Ibuprofeno', 'Ibuprofeno');
+SELECT * FROM dbo.medicamento;
+/*INSERT Diagnostico*/
+INSERT INTO dbo.diagnostico(duracion_diagnostico, dosis_diagnostico, descripcion_diagnostico, id_medicamento)
+VALUES('3-5 dias', '2 pastillas cada 6hrs', 'Analgesico para dolor muscular', '1'),
+('1-2', '3 pastillas cada 12hrs', 'Analgesico para fiebre', '2');
+SELECT * FROM dbo.diagnostico;
+/*Insert Consulta*/
+INSERT INTO dbo.consulta (justificante, fecha_nueva_consulta, tipo_consulta, id_aseguradora, )
 /*PROCEDURE*/

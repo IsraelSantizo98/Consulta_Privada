@@ -1,0 +1,2 @@
+CREATE DATABASE ConsultasPrivadas2;
+USE ConsultasPrivadas2;
