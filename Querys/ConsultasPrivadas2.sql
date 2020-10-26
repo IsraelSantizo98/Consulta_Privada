@@ -111,3 +111,9 @@ SELECT * FROM dbo.medicamento;
 INSERT INTO dbo.consulta(tipo_consulta, fecha_nueva_consulta, justificante_consulta, id_cita)
 VALUES('Revision', '15/11/2020', 'Aseguradora cubre el gasto', '1');
 SELECT * FROM dbo.consulta;
+/*Insert Diagnostico*/
+INSERT INTO dbo.diagnostico(dosis_diagnostico, descripcion_diagnostico, id_consulta, id_medicamento)
+VALUES ('1 vez cada 12hrs por 3 dias', 'Paciente con sintamos de gripe se receta antiviral', '1', '1');
+INSERT INTO dbo.diagnostico(dosis_diagnostico, descripcion_diagnostico, id_urgencia, id_medicamento)
+VALUES ('2 vez cada 6hrs por 6 dias', 'Paciente fractura de brazo izquierdo se receta analgesico', '1', '2');
+SELECT * FROM dbo.diagnostico;
