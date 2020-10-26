@@ -31,3 +31,11 @@ CREATE TABLE urgencia(
 	CONSTRAINT PK_urgencia PRIMARY KEY (id_urgencia),
 	CONSTRAINT FK_pacienteU FOREIGN KEY (id_urgencia) REFERENCES dbo.urgencia (id_urgencia)
 );
+/*Creacion tabla cita*/
+CREATE TABLE cita(
+	id_cita int IDENTITY (1,1),
+	fecha_hora_cita varchar(45),
+	id_paciente int NOT NULL,
+	CONSTRAINT PK_cita PRIMARY KEY (id_cita),
+	CONSTRAINT FK_pacienteC FOREIGN KEY (id_paciente) REFERENCES dbo.paciente (id_paciente)
+);
