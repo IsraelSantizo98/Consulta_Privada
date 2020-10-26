@@ -93,3 +93,7 @@ INSERT INTO dbo.paciente(nombre_paciente, apellido_paciente, domicilio_paciente,
 VALUES('Jose Israel', 'Santizo Santos', 'Colonia 2, Guatemala Ciudad', 'Masculino', '01/12/1998', '1'),
 ('Dilia Isabel', 'Valle Caceres', 'Residencial 4, Guatemal Ciudad', 'Femenino', '22/02/1999', '2');
 SELECT * FROM dbo.paciente;
+/*Insert Urgencia*/
+INSERT INTO dbo.urgencia(nombre_urgencia, apellido_urgencia, fecha_hora_urgencia, descripcion_urgencia, id_paciente)
+VALUES('Jose Israel', 'Santizo Santos', '25/10/2020 4pm', 'Ingreso de emergencia posible fractura de brazo', '1');
+SELECT * FROM dbo.urgencia;
