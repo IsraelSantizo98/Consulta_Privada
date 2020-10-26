@@ -49,3 +49,10 @@ CREATE TABLE consulta(
 	CONSTRAINT PK_consulta PRIMARY KEY(id_consulta),
 	CONSTRAINT FK_citaCO FOREIGN KEY (id_cita) REFERENCES dbo.cita(id_cita)
 );
+/*Creacion tabla medicamento*/
+CREATE TABLE medicamento(
+	id_medicamento int IDENTITY(1,1),
+	principio_activo varchar(45),
+	denominacion varchar(45),
+	CONSTRAINT PK_medicamento PRIMARY KEY (id_medicamento)
+);
