@@ -39,3 +39,13 @@ CREATE TABLE cita(
 	CONSTRAINT PK_cita PRIMARY KEY (id_cita),
 	CONSTRAINT FK_pacienteC FOREIGN KEY (id_paciente) REFERENCES dbo.paciente (id_paciente)
 );
+/*Creacion tabla consulta*/
+CREATE TABLE consulta(
+	id_consulta int IDENTITY (1,1),
+	tipo_hora_nueva_consulta varchar(10),
+	fecha_nueva_consulta varchar(45),
+	justificante_consulta varchar(100),
+	id_cita int NOT NULL,
+	CONSTRAINT PK_consulta PRIMARY KEY(id_consulta),
+	CONSTRAINT FK_citaCO FOREIGN KEY (id_cita) REFERENCES dbo.cita(id_cita)
+);
