@@ -360,3 +360,35 @@ BEGIN
 DELETE FROM dbo.consulta WHERE id_consulta = @id_consulta
 END;
 EXEC sp_DeleteConsulta 3;
+GO
+CREATE PROCEDURE sp_InsertMedicamento
+	@principio_activo		varchar(45),
+	@denominacion		varchar(45)
+AS
+BEGIN
+	INSERT INTO dbo.medicamento(principio_activo, denominacion)
+	VALUES (@principio_activo, @denominacion)
+END;
+EXEC sp_InsertMedicamento 'Calcio', 'Fortizica Huesos';
+GO
+CREATE PROCEDURE sp_UpdateMedicamento
+(	
+	@id_medicamento int,
+	@principio_activo		varchar(45),
+	@denominacion		varchar(45)
+)
+AS 
+BEGIN
+UPDATE dbo.medicamento SET principio_activo = @principio_activo, denominacion = @denominacion WHERE id_medicamento = @id_medicamento
+END;
+EXEC sp_UpdateMedicamento 3,'Vitamina D', 'Fortifica los huesos';
+GO
+CREATE PROCEDURE sp_DeleteMedicamento
+(
+@id_medicamento int
+)
+AS
+BEGIN
+DELETE FROM dbo.medicamento WHERE id_medicamento = @id_medicamento
+END;
+EXEC sp_DeleteMedicamento 3;
