@@ -392,3 +392,19 @@ BEGIN
 DELETE FROM dbo.medicamento WHERE id_medicamento = @id_medicamento
 END;
 EXEC sp_DeleteMedicamento 3;
+GO
+CREATE PROCEDURE sp_InsertDiagnostico
+	@dosis_diagnostico		varchar(45),
+	@descripcion_diagnostico		varchar(100),
+	@id_consulta int,
+	@id_urgencia int,
+	@id_medicamento int
+AS
+BEGIN
+	INSERT INTO dbo.diagnostico (dosis_diagnostico, descripcion_diagnostico, id_consulta, id_urgencia, id_medicamento)
+	VALUES (@dosis_diagnostico, @descripcion_diagnostico, @id_consulta, @id_urgencia, @id_medicamento)
+END;
+EXEC sp_InsertDiagnostico '2 veces cada 48 hrs por 1 semana', 'Paciente con problemas en los huesos', 2, ,3;
+SELECT  * FROM dbo.diagnostico
+SELECT  * FROM dbo.urgencia
+SELECT  * FROM dbo.consulta
