@@ -126,8 +126,9 @@ SELECT * FROM dbo.factura;
 /*Backup*/
 BACKUP DATABASE ConsultasPrivadas2
 TO DISK = 'D:\UMG\6to-Semestre\Bases_de_datos\Proyecto_Final\Backup\fullbackup.bak';
-/*Prodecimiento*/
-/*CREATE PROCEDURE [dbo].[spInsertPacientes]
+GO
+/*Insert*/
+CREATE PROCEDURE sp_InsertPaciente
 	@nombre_paciente		varchar(45),
 	@apellido_paciente		varchar(45),
 	@domicilio_paciente		varchar(100),
@@ -138,10 +139,41 @@ AS
 BEGIN
 	INSERT INTO dbo.paciente (nombre_paciente,apellido_paciente,domicilio_paciente,sexo_paciente,fecha_naciemiento_paciente,id_aseguradora)
 	VALUES (@nombre_paciente,@apellido_paciente,@domicilio_paciente,@sexo_paciente,@fecha_naciemiento_paciente,@id_aseguradora)
-END*/
+END;
+EXEC sp_InsertPaciente 'Jessica', 'Pearson', 'Guatemala', 'Femenino', '10/05/1970', 2;
+/*Upadate*/
+GO
+CREATE PROCEDURE sp_UpdatePaciente
+(	
+	@id_paciente			int,
+	@nombre_paciente		varchar(45),
+	@apellido_paciente		varchar(45),
+	@domicilio_paciente		varchar(100),
+	@sexo_paciente			varchar(12),
+	@fecha_naciemiento_paciente	varchar(45),
+	@id_aseguradora			int
+)
+AS 
+BEGIN
+UPDATE dbo.paciente SET nombre_paciente = @nombre_paciente, apellido_paciente = @apellido_paciente, domicilio_paciente = @domicilio_paciente, sexo_paciente = @sexo_paciente, fecha_naciemiento_paciente = @fecha_naciemiento_paciente, id_aseguradora = @id_aseguradora WHERE id_paciente = @id_paciente
+END;
+EXEC sp_UpdatePaciente 3,'Steven', 'Mazariegos', 'Guatemala, Ciudad', 'Masculino', '02/09/1998', 2;
+/*Delete*/
+GO
+CREATE PROCEDURE sp_DeletePaciente
+(
+@id_paciente int
+)
+AS
+BEGIN
+DELETE FROM dbo.paciente WHERE id_paciente = @id_paciente
+END;
+EXEC sp_DeletePaciente 4;
 /*Select*/
+GO
 CREATE PROCEDURE sp_SelectPaciente
 AS
 BEGIN
 SELECT * FROM dbo.paciente
 END;
+EXEC sp_SelectPaciente;
