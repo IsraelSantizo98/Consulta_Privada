@@ -123,3 +123,25 @@ VALUES('674598-5', 'Aseguradora cubre gastos', 125.00, '2', '1');
 INSERT INTO dbo.factura(nit_factura, descripcion_factura, total_factura, id_paciente, id_urgencia)
 VALUES('324587-1', 'Aseguradora cubre gastos', 125.00, '1', '1');
 SELECT * FROM dbo.factura;
+/*Backup*/
+BACKUP DATABASE ConsultasPrivadas2
+TO DISK = 'D:\UMG\6to-Semestre\Bases_de_datos\Proyecto_Final\Backup\fullbackup.bak';
+/*Prodecimiento*/
+/*CREATE PROCEDURE [dbo].[spInsertPacientes]
+	@nombre_paciente		varchar(45),
+	@apellido_paciente		varchar(45),
+	@domicilio_paciente		varchar(100),
+	@sexo_paciente			varchar(12),
+	@fecha_naciemiento_paciente	varchar(45),
+	@id_aseguradora			int
+AS
+BEGIN
+	INSERT INTO dbo.paciente (nombre_paciente,apellido_paciente,domicilio_paciente,sexo_paciente,fecha_naciemiento_paciente,id_aseguradora)
+	VALUES (@nombre_paciente,@apellido_paciente,@domicilio_paciente,@sexo_paciente,@fecha_naciemiento_paciente,@id_aseguradora)
+END*/
+/*Select*/
+CREATE PROCEDURE sp_SelectPaciente
+AS
+BEGIN
+SELECT * FROM dbo.paciente
+END;
