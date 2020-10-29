@@ -42,7 +42,7 @@ CREATE TABLE cita(
 /*Creacion tabla consulta*/
 CREATE TABLE consulta(
 	id_consulta int IDENTITY (1,1),
-	tipo_hora_nueva_consulta varchar(10),
+	tipo_consulta varchar(10),
 	fecha_nueva_consulta varchar(45),
 	justificante_consulta varchar(100),
 	id_cita int NOT NULL,
@@ -84,6 +84,44 @@ CREATE TABLE factura(
 	CONSTRAINT FK_consultaF FOREIGN KEY (id_consulta) REFERENCES dbo.consulta (id_consulta),
 	CONSTRAINT FK_urgenciaF FOREIGN KEY (id_urgencia) REFERENCES dbo.urgencia (id_urgencia)
 );
+/*Creacion tabla LOG*/
+CREATE TABLE PacienteLog(
+	idPacienteLog int IDENTITY (1,1),
+	id_paciente int NOT NULL,
+	nombre_paciente varchar(45),
+	apellido_paciente varchar(45),
+	domicilio_paciente varchar(100), 
+	sexo_paciente varchar(12),
+	fecha_naciemiento_paciente varchar(45),
+	id_aseguradora int,
+	updateAt DATETIME NOT NULL,
+	operacion CHAR(3) NOT NULL,
+	CHECK (operacion = 'INS' or operacion = 'DEL')
+);
+/*Trigger*/
+GO
+CREATE TRIGGER trg_PacienteAudit
+ON dbo.paciente
+AFTER INSERT, DELETE
+AS
+BEGIN
+	SET NOCOUNT ON
+	INSERT INTO dbo.PacienteLog(id_paciente, nombre_paciente, apellido_paciente, sexo_paciente, fecha_naciemiento_paciente, id_aseguradora, updateAt, operacion)
+	SELECT
+		i.id_paciente, i.nombre_paciente,
+		i.domicilio_paciente, i.sexo_paciente,
+		i.fecha_naciemiento_paciente, i.id_aseguradora,
+		GETDATE(), 'INS'
+	FROM inserted AS i
+	UNION ALL
+	SELECT 
+		d.id_paciente, d.nombre_paciente,
+		d.domicilio_paciente, d.sexo_paciente,
+		d.fecha_naciemiento_paciente, d.id_aseguradora,
+		GETDATE(), 'DEL'
+	FROM deleted AS d
+END;
+SELECT * FROM dbo.PacienteLog;
 /*Inssert Aseguradora*/
 INSERT INTO dbo.aseguradora(nombre_aseguradora, domicilio_social_aseguradora, CIF_aseguradora)
 VALUES ('El Roble', 'Guatemala, Guatemala', 'A000001'),
@@ -168,7 +206,7 @@ AS
 BEGIN
 DELETE FROM dbo.paciente WHERE id_paciente = @id_paciente
 END;
-EXEC sp_DeletePaciente 4;
+EXEC sp_DeletePaciente 3;
 /*Select*/
 GO
 CREATE PROCEDURE sp_SelectPaciente
@@ -177,3 +215,148 @@ BEGIN
 SELECT * FROM dbo.paciente
 END;
 EXEC sp_SelectPaciente;
+/*Insert Aseguradora*/
+GO
+CREATE PROCEDURE sp_InsertAseguradora
+	@nombre_aseguradora		varchar(45),
+	@domicilio_social_aseguradora		varchar(100),
+	@CIF_aseguradora		varchar(45)
+AS
+BEGIN
+	INSERT INTO dbo.aseguradora(nombre_aseguradora, domicilio_social_aseguradora, CIF_aseguradora)
+	VALUES (@nombre_aseguradora,@domicilio_social_aseguradora, @CIF_aseguradora)
+END;
+EXEC sp_InsertAseguradora 'MAPFRE', 'Guatemala, Zona 10', 'A000003';
+/*Update*/
+
+GO
+CREATE PROCEDURE sp_UpdateAseguradora
+(	
+	@id_aseguradora int,
+	@nombre_aseguradora		varchar(45),
+	@domicilio_social_aseguradora		varchar(100),
+	@CIF_aseguradora		varchar(45)
+)
+AS 
+BEGIN
+UPDATE dbo.aseguradora SET nombre_aseguradora = @nombre_aseguradora, domicilio_social_aseguradora = @domicilio_social_aseguradora, CIF_aseguradora = @CIF_aseguradora WHERE id_aseguradora = @id_aseguradora
+END;
+EXEC sp_UpdateAseguradora 2, 'Seguros G&T', 'Guatemala, Zona 14', 'A000002';
+SELECT *FROM dbo.aseguradora;
+GO
+CREATE PROCEDURE sp_DeleteAseguradora 
+(
+	@id_aseguradora int
+)
+AS
+BEGIN
+DELETE FROM dbo.aseguradora WHERE id_aseguradora = @id_aseguradora
+END;
+EXEC sp_DeleteAseguradora 3;
+GO
+CREATE PROCEDURE sp_InsertUrgencia
+	@nombre_urgencia varchar(45),
+	@apellido_urgencia varchar(45),
+	@fecha_hora_urgencia varchar(45),
+	@descripcion_urgencia varchar(100),
+	@id_paciente int
+AS
+BEGIN
+	INSERT INTO dbo.urgencia (nombre_urgencia,apellido_urgencia, fecha_hora_urgencia, descripcion_urgencia, id_paciente)
+	VALUES (@nombre_urgencia,@apellido_urgencia, @fecha_hora_urgencia, @descripcion_urgencia, @id_paciente)
+END;
+EXEC sp_InsertUrgencia 'Jessica', 'Pearson', '27/10/2020', 'Roptura de ligamento cruzado', 5;
+GO
+CREATE PROCEDURE sp_UpdateUrgencia
+(	
+	@id_urgencia int,
+	@nombre_urgencia varchar(45),
+	@apellido_urgencia varchar(45),
+	@fecha_hora_urgencia varchar(45),
+	@descripcion_urgencia varchar(100),
+	@id_paciente int
+)
+AS 
+BEGIN
+UPDATE dbo.urgencia SET nombre_urgencia = @nombre_urgencia, apellido_urgencia = @apellido_urgencia, fecha_hora_urgencia = @fecha_hora_urgencia, descripcion_urgencia = @descripcion_urgencia, id_paciente = @id_paciente WHERE id_urgencia = @id_urgencia
+END;
+EXEC sp_UpdateUrgencia 2, 'Jessica', 'Pearson', '25/10/2020 6am', 'Roptura de ligamento cruzado', 5;
+GO
+CREATE PROCEDURE sp_DeleteUrgencia
+(
+@id_urgencia int
+)
+AS
+BEGIN
+DELETE FROM dbo.urgencia WHERE id_urgencia = @id_urgencia
+END;
+EXEC sp_DeleteUrgencia 2;
+
+GO
+CREATE PROCEDURE sp_InsertCita
+	@fecha_hora_cita varchar(45),
+	@id_paciente int
+AS
+BEGIN
+	INSERT INTO dbo.cita (fecha_hora_cita, id_paciente)
+	VALUES (@fecha_hora_cita, @id_paciente)
+END;
+EXEC sp_InsertCita '12/02/2020', 1;
+GO
+CREATE PROCEDURE sp_UpdateCita
+(	
+	@id_cita int,
+	@fecha_hora_cita varchar(45),
+	@id_paciente int
+)
+AS 
+BEGIN
+UPDATE dbo.cita SET fecha_hora_cita = @fecha_hora_cita, id_paciente = @id_paciente WHERE id_cita = @id_cita
+END;
+EXEC sp_UpdateCita 2, '12/02/2020 4pm', 1;
+GO
+CREATE PROCEDURE sp_DeleteCita
+(
+@id_cita int
+)
+AS
+BEGIN
+DELETE FROM dbo.cita WHERE id_cita = @id_cita
+END;
+EXEC sp_DeleteCita 3;
+GO
+CREATE PROCEDURE sp_InsertConsulta
+	@tipo_consulta		varchar(10),
+	@fecha_nueva_consulta		varchar(45),
+	@justificante_consulta	varchar(100),
+	@id_cita		int
+AS
+BEGIN
+	INSERT INTO dbo.consulta (tipo_consulta, fecha_nueva_consulta, justificante_consulta, id_cita)
+	VALUES (@tipo_consulta, @fecha_nueva_consulta, @justificante_consulta, @id_cita)
+END;
+EXEC sp_InsertConsulta 'Control', '20/11/2020', 'Se debe realizar examenes en un mes', 2;
+GO
+CREATE PROCEDURE sp_UpdateConsulta
+(	
+	@id_consulta			int,
+	@tipo_consulta		varchar(10),
+	@fecha_nueva_consulta		varchar(45),
+	@justificante_consulta	varchar(100),
+	@id_cita		int
+)
+AS 
+BEGIN
+UPDATE dbo.consulta SET tipo_consulta = @tipo_consulta, fecha_nueva_consulta = @fecha_nueva_consulta, justificante_consulta = @justificante_consulta, id_cita = @id_cita WHERE id_consulta = @id_consulta
+END;
+EXEC sp_UpdateConsulta 2,'Control', '20/11/2020', 'Control mensual', 2;
+GO
+CREATE PROCEDURE sp_DeleteConsulta
+(
+@id_consulta int
+)
+AS
+BEGIN
+DELETE FROM dbo.consulta WHERE id_consulta = @id_consulta
+END;
+EXEC sp_DeleteConsulta 3;
