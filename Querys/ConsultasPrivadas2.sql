@@ -8,6 +8,38 @@ CREATE TABLE aseguradora(
 	CIF_aseguradora varchar(45),
 	CONSTRAINT PK_aseguradora PRIMARY KEY (id_aseguradora)
 );
+/*TRIGGER*/
+CREATE TABLE AseguradoraLog(
+	idAseguradoraLog int IDENTITY (1,1),
+	id_aseguradora int NOT NULL,
+	nombre_aseguradora varchar(45),
+	domicilio_social_aseguradora varchar(100), 
+	CIF_aseguradora varchar(45),
+	updateAt DATETIME NOT NULL,
+	operacion CHAR(3) NOT NULL,
+	CHECK (operacion = 'INS' or operacion = 'DEL')
+);
+GO
+CREATE TRIGGER trg_AseguradoraAudit
+ON dbo.aseguradora
+AFTER INSERT, DELETE
+AS
+BEGIN
+	SET NOCOUNT ON
+	INSERT INTO dbo.AseguradoraLog(id_aseguradora, nombre_aseguradora, domicilio_social_aseguradora, CIF_aseguradora, updateAt, operacion)
+	SELECT
+		i.id_aseguradora, i.nombre_aseguradora,
+		i.domicilio_social_aseguradora, i.CIF_aseguradora,
+		GETDATE(), 'INS'
+	FROM inserted AS i
+	UNION ALL
+	SELECT 
+		d.id_aseguradora, d.nombre_aseguradora,
+		d.domicilio_social_aseguradora, d.CIF_aseguradora,
+		GETDATE(), 'DEL'
+	FROM deleted AS d
+END;
+SELECT * FROM dbo.AseguradoraLog;
 /*Creacion tabla paciente*/
 CREATE TABLE paciente(
 	id_paciente int IDENTITY (1,1),
@@ -470,3 +502,233 @@ BEGIN
 DELETE FROM dbo.factura WHERE id_factura = @id_factura
 END;
 EXEC sp_Deletefactura 1;
+GO
+/*TRIGGER*/
+CREATE TABLE UrgenciaLog(
+	idUrgenciaLog int IDENTITY (1,1),
+	id_urgencia int NOT NULL,
+	nombre_urgencia varchar(45),
+	apellido_urgencia varchar(45),
+	fecha_hora_urgencia varchar(45),
+	descripcion_urgencia varchar(100),
+	id_paciente int,
+	updateAt DATETIME NOT NULL,
+	operacion CHAR(3) NOT NULL,
+	CHECK (operacion = 'INS' or operacion = 'DEL')
+);
+GO
+CREATE TRIGGER trg_UrgenciaAudit
+ON dbo.urgencia
+AFTER INSERT, DELETE
+AS
+BEGIN
+	SET NOCOUNT ON
+	INSERT INTO dbo.UrgenciaLog(id_urgencia, nombre_urgencia, apellido_urgencia, fecha_hora_urgencia, descripcion_urgencia, id_paciente, updateAt, operacion)
+	SELECT
+		i.id_urgencia, i.nombre_urgencia,
+		i.apellido_urgencia, i.fecha_hora_urgencia,
+		i.descripcion_urgencia, i.id_paciente,
+		GETDATE(), 'INS'
+	FROM inserted AS i
+	UNION ALL
+	SELECT 
+		d.id_urgencia, d.nombre_urgencia,
+		d.apellido_urgencia, d.fecha_hora_urgencia,
+		d.descripcion_urgencia, d.id_paciente,
+		GETDATE(), 'DEL'
+	FROM deleted AS d
+END;
+SELECT * FROM dbo.AseguradoraLog;
+GO
+/*TRIGGER*/
+CREATE TABLE CitaLog(
+	idCitaLog int IDENTITY (1,1),
+	id_cita int NOT NULL,
+	fecha_hora_cita varchar(45),
+	id_paciente int NOT NULL,
+	updateAt DATETIME NOT NULL,
+	operacion CHAR(3) NOT NULL,
+	CHECK (operacion = 'INS' or operacion = 'DEL')
+);
+GO
+CREATE TRIGGER trg_CitaAudit
+ON dbo.cita
+AFTER INSERT, DELETE
+AS
+BEGIN
+	SET NOCOUNT ON
+	INSERT INTO dbo.CitaLog(id_cita, fecha_hora_cita, id_paciente, updateAt, operacion)
+	SELECT
+		i.id_cita, i.fecha_hora_cita,
+		i.id_paciente,
+		GETDATE(), 'INS'
+	FROM inserted AS i
+	UNION ALL
+	SELECT 
+		d.id_cita, d.fecha_hora_cita,
+		d.id_paciente,
+		GETDATE(), 'DEL'
+	FROM deleted AS d
+END;
+SELECT * FROM dbo.CitaLog;
+GO
+/*TRIGGER*/
+CREATE TABLE ConsultaLog(
+	idCitaLog int IDENTITY (1,1),
+	id_consulta int NOT NULL,
+	tipo_consulta varchar(10),
+	fecha_nueva_consulta varchar(45),
+	justificante_consulta varchar(100),
+	id_cita int NOT NULL,
+	updateAt DATETIME NOT NULL,
+	operacion CHAR(3) NOT NULL,
+	CHECK (operacion = 'INS' or operacion = 'DEL')
+);
+GO
+CREATE TRIGGER trg_ConsultaAudit
+ON dbo.consulta
+AFTER INSERT, DELETE
+AS
+BEGIN
+	SET NOCOUNT ON
+	INSERT INTO dbo.ConsultaLog(id_consulta, tipo_consulta, fecha_nueva_consulta, justificante_consulta, id_cita, updateAt, operacion)
+	SELECT
+		i.id_consulta, i.tipo_consulta, i.fecha_nueva_consulta, i.justificante_consulta, i.id_cita,
+		GETDATE(), 'INS'
+	FROM inserted AS i
+	UNION ALL
+	SELECT 
+		d.id_consulta, d.tipo_consulta, d.fecha_nueva_consulta, d.justificante_consulta, d.id_cita,
+		GETDATE(), 'DEL'
+	FROM deleted AS d
+END;
+SELECT * FROM dbo.ConsultaLog;
+GO
+/*TRIGGER*/
+CREATE TABLE ConsultaLog(
+	idCitaLog int IDENTITY (1,1),
+	id_consulta int NOT NULL,
+	tipo_consulta varchar(10),
+	fecha_nueva_consulta varchar(45),
+	justificante_consulta varchar(100),
+	id_cita int NOT NULL,
+	updateAt DATETIME NOT NULL,
+	operacion CHAR(3) NOT NULL,
+	CHECK (operacion = 'INS' or operacion = 'DEL')
+);
+GO
+CREATE TRIGGER trg_ConsultaAudit
+ON dbo.consulta
+AFTER INSERT, DELETE
+AS
+BEGIN
+	SET NOCOUNT ON
+	INSERT INTO dbo.ConsultaLog(id_consulta, tipo_consulta, fecha_nueva_consulta, justificante_consulta, id_cita, updateAt, operacion)
+	SELECT
+		i.id_consulta, i.tipo_consulta, i.fecha_nueva_consulta, i.justificante_consulta, i.id_cita,
+		GETDATE(), 'INS'
+	FROM inserted AS i
+	UNION ALL
+	SELECT 
+		d.id_consulta, d.tipo_consulta, d.fecha_nueva_consulta, d.justificante_consulta, d.id_cita,
+		GETDATE(), 'DEL'
+	FROM deleted AS d
+END;
+SELECT * FROM dbo.ConsultaLog;
+GO
+/*TRIGGER*/
+CREATE TABLE MedicamenteLog(
+	idMedicamentoLog int IDENTITY (1,1),
+	id_medicamento int NOT NULL,
+	principio_activo varchar(45),
+	denominacion varchar(45),
+	updateAt DATETIME NOT NULL,
+	operacion CHAR(3) NOT NULL,
+	CHECK (operacion = 'INS' or operacion = 'DEL')
+);
+GO
+CREATE TRIGGER trg_MedicamentoAudit
+ON dbo.medicamento
+AFTER INSERT, DELETE
+AS
+BEGIN
+	SET NOCOUNT ON
+	INSERT INTO dbo.MedicamenteLog(id_medicamento, principio_activo, denominacion, updateAt, operacion)
+	SELECT
+		i.id_medicamento, i.principio_activo, i.denominacion,
+		GETDATE(), 'INS'
+	FROM inserted AS i
+	UNION ALL
+	SELECT 
+		d.id_medicamento, d.principio_activo, d.denominacion,
+		GETDATE(), 'DEL'
+	FROM deleted AS d
+END;
+SELECT * FROM dbo.MedicamenteLog;
+GO
+/*TRIGGER*/
+CREATE TABLE DiagnosticoLog(
+	idDiagnosticoLog int IDENTITY (1,1),
+	id_diagnostico int NOT NULL,
+	dosis_diagnostico varchar(45),
+	descripcion_diagnostico varchar(100),
+	id_consulta int,
+	id_urgencia int,
+	id_medicamento int,
+	updateAt DATETIME NOT NULL,
+	operacion CHAR(3) NOT NULL,
+	CHECK (operacion = 'INS' or operacion = 'DEL')
+);
+GO
+CREATE TRIGGER trg_DiagnosticoAudit
+ON dbo.diagnostico
+AFTER INSERT, DELETE
+AS
+BEGIN
+	SET NOCOUNT ON
+	INSERT INTO dbo.DiagnosticoLog(id_diagnostico, dosis_diagnostico, descripcion_diagnostico, id_consulta, id_urgencia, id_medicamento, updateAt, operacion)
+	SELECT
+		i.id_diagnostico, i.dosis_diagnostico, i.descripcion_diagnostico, i.id_consulta, i.id_urgencia, i.id_medicamento,
+		GETDATE(), 'INS'
+	FROM inserted AS i
+	UNION ALL
+	SELECT 
+		d.id_diagnostico, d.dosis_diagnostico, d.descripcion_diagnostico, d.id_consulta, d.id_urgencia, d.id_medicamento,
+		GETDATE(), 'DEL'
+	FROM deleted AS d
+END;
+SELECT * FROM dbo.DiagnosticoLog;
+GO
+/*TRIGGER*/
+CREATE TABLE FacturaLog(
+	idFacturaLog int IDENTITY (1,1),
+	id_factura int NOT NULL,
+	nit_factura varchar(8),
+	descripcion_factura varchar(100),
+	total_factura decimal(18,2),
+	id_paciente int NOT NULL,
+	id_consulta int,
+	id_urgencia int,
+	updateAt DATETIME NOT NULL,
+	operacion CHAR(3) NOT NULL,
+	CHECK (operacion = 'INS' or operacion = 'DEL')
+);
+GO
+CREATE TRIGGER trg_FacturaAudit
+ON dbo.factura
+AFTER INSERT, DELETE
+AS
+BEGIN
+	SET NOCOUNT ON
+	INSERT INTO dbo.FacturaLog(id_factura, nit_factura, descripcion_factura, total_factura, id_paciente, id_consulta, id_urgencia, updateAt, operacion)
+	SELECT
+		i.id_factura, i.nit_factura, i.descripcion_factura, i.total_factura, i.id_paciente, i.id_consulta, i.id_urgencia,
+		GETDATE(), 'INS'
+	FROM inserted AS i
+	UNION ALL
+	SELECT 
+		d.id_factura, d.nit_factura, d.descripcion_factura, d.total_factura, d.id_paciente, d.id_consulta, d.id_urgencia,
+		GETDATE(), 'DEL'
+	FROM deleted AS d
+END;
+SELECT * FROM dbo.FacturaLog;
