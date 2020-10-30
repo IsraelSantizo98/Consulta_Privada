@@ -404,7 +404,69 @@ BEGIN
 	INSERT INTO dbo.diagnostico (dosis_diagnostico, descripcion_diagnostico, id_consulta, id_urgencia, id_medicamento)
 	VALUES (@dosis_diagnostico, @descripcion_diagnostico, @id_consulta, @id_urgencia, @id_medicamento)
 END;
-EXEC sp_InsertDiagnostico '2 veces cada 48 hrs por 1 semana', 'Paciente con problemas en los huesos', 2, ,3;
-SELECT  * FROM dbo.diagnostico
-SELECT  * FROM dbo.urgencia
-SELECT  * FROM dbo.consulta
+EXEC sp_InsertDiagnostico '2 veces cada 48 hrs por 1 semana', 'Paciente con problemas en los huesos', 2, NULL,3;
+GO
+CREATE PROCEDURE sp_UpdateDiagnostico
+(	
+	@id_diagnostico int,
+	@dosis_diagnostico		varchar(45),
+	@descripcion_diagnostico		varchar(100),
+	@id_consulta int,
+	@id_urgencia int,
+	@id_medicamento int
+)
+AS 
+BEGIN
+UPDATE dbo.diagnostico SET dosis_diagnostico = @dosis_diagnostico, descripcion_diagnostico = @descripcion_diagnostico, id_consulta = @id_consulta, id_urgencia = @id_urgencia, id_medicamento = @id_medicamento WHERE id_diagnostico = @id_diagnostico
+END;
+EXEC sp_UpdateDiagnostico 12,'2 veces al dia', 'Paciente con problemas en los huesos', 2, NULL, 3;
+GO
+CREATE PROCEDURE sp_DeleteDiagnostico
+(
+@id_diagnostico int
+)
+AS
+BEGIN
+DELETE FROM dbo.diagnostico WHERE id_diagnostico = @id_diagnostico
+END;
+EXEC sp_DeleteDiagnostico 12;
+GO
+CREATE PROCEDURE sp_InsertFactura
+	@nit_factura varchar(8),
+	@descripcion_factura	varchar(100),
+	@total_factura		decimal(18,2),
+	@id_paciente		int,
+	@id_consulta		int,
+	@id_urgencia		int
+AS
+BEGIN
+	INSERT INTO dbo.factura (nit_factura, descripcion_factura, total_factura, id_paciente, id_consulta, id_urgencia)
+	VALUES (@nit_factura, @descripcion_factura, @total_factura, @id_paciente, @id_consulta, @id_urgencia)
+END;
+EXEC sp_InsertFactura '875963-8', 'Pago por servicio', 125.00, '1', '1', NULL;
+GO
+CREATE PROCEDURE sp_UpdateFactura
+(	
+	@id_factura int,
+	@nit_factura varchar(8),
+	@descripcion_factura	varchar(100),
+	@total_factura		decimal(18,2),
+	@id_paciente		int,
+	@id_consulta		int,
+	@id_urgencia		int
+)
+AS 
+BEGIN
+UPDATE dbo.factura SET nit_factura = @nit_factura, descripcion_factura = @descripcion_factura, total_factura = @total_factura, id_paciente = @id_paciente, id_consulta = @id_consulta, id_urgencia = @id_urgencia WHERE id_factura = @id_factura
+END;
+EXEC sp_UpdateFactura 3,'874587-9', 'Pago por diagnostico', 150.00, '1', '1', NULL;
+GO
+CREATE PROCEDURE sp_DeleteFactura
+(
+@id_factura int
+)
+AS
+BEGIN
+DELETE FROM dbo.factura WHERE id_factura = @id_factura
+END;
+EXEC sp_Deletefactura 1;
